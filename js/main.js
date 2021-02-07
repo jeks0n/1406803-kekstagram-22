@@ -60,14 +60,14 @@ const COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают.',
   'Как можно было поймать такой неудачный момент?!',
 ];
-const PHOTO_DESCRIPTION_COUNT = 25;
+const PHOTO_DATA_COUNT = 25;
 const PHOTO_LIKES_MIN = 15;
 const PHOTO_LIKES_MAX = 200;
 const COMMENT_MAX_COUNT = 100;
 const COMMENT_PER_PAGE_MIN = 1;
 const COMMENT_PER_PAGE_MAX = 5;
-const AVATAR_MIN_COUNT = 1;
-const AVATAR_MAX_COUNT = 6;
+const COMMENT_AVATAR_INDEX_MIN = 1;
+const COMMENT_AVATAR_INDEX_MAX = 6;
 
 const getInteger = (min, max) => {
   if (min > max) {
@@ -79,48 +79,40 @@ const getInteger = (min, max) => {
   return Math.floor(min + Math.random() * (max + 1 - min))
 };
 
-const getRandomArrayElement = (elements, flag) => {
-  const index = getInteger(0, elements.length - 1);
-  const item = elements[index];
-
-  if (flag === 'object') {
-    return {
-      item,
-      index,
-    }
+const getRandomArrayElement = (elements, { repeat = false }) => {
+  if (repeat) {
+    return () => elements[getInteger(0, elements.length - 1)];
   }
 
-  return item;
-};
-
-const getRandomArrayElementNoRepeats = (array) => {
-  const copy = array.slice();
+  const copy = elements.slice().sort(() => Math.random() - 0.5);
+  let index = 0;
 
   return () => {
-    if (copy.length < 1) {
+    if (index >= copy.length) {
       throw new Error('Больше нет элементов для отображения');
     }
+    index++;
 
-    const { item, index } = getRandomArrayElement(copy, 'object');
-    copy.splice(index, 1);
-
-    return item;
+    return copy[index - 1];
   }
 };
 
-const generateArrayNumbers = (num) => Array.from({ length: num }, (v, k) => k + 1);
-const checkTextLength = (text, maxLength) => text.length <= maxLength;
-const getDescriptionId = getRandomArrayElementNoRepeats(generateArrayNumbers(PHOTO_DESCRIPTION_COUNT));
-const getUrlIndex = getRandomArrayElementNoRepeats(generateArrayNumbers(PHOTO_DESCRIPTION_COUNT));
-const getDescription = getRandomArrayElementNoRepeats(DESCRIPTIONS);
-const getCommentId = getRandomArrayElementNoRepeats(generateArrayNumbers(COMMENT_MAX_COUNT));
+const createDataIds = () => {
+  return [ ...Array(PHOTO_DATA_COUNT) ].map((item, index) => index + 1);
+}
 
-const createComments = () => {
+const checkTextLength = (text, maxLength) => text.length <= maxLength;
+const getDescriptionId = getRandomArrayElement(createDataIds(), {});
+const getUrlIndex = getRandomArrayElement(createDataIds(), {});
+const getDescription = getRandomArrayElement(DESCRIPTIONS, {});
+const getCommentId = getRandomArrayElement([ ...Array(COMMENT_MAX_COUNT) ].map((item, index) => index + 1), {});
+
+const createComment = () => {
   return {
     id: getCommentId(),
-    avatar: `img/avatar-${getInteger(AVATAR_MIN_COUNT, AVATAR_MAX_COUNT)}.svg`,
-    message: getRandomArrayElement(COMMENTS),
-    name: getRandomArrayElement(NAMES),
+    avatar: `img/avatar-${getInteger(COMMENT_AVATAR_INDEX_MIN, COMMENT_AVATAR_INDEX_MAX)}.svg`,
+    message: getRandomArrayElement(COMMENTS, { repeat: true })(),
+    name: getRandomArrayElement(NAMES, { repeat: true })(),
   }
 }
 
@@ -130,12 +122,12 @@ const createDescription = () => {
     url: `photos/${getUrlIndex()}.jpg`,
     description: getDescription(),
     likes: getInteger(PHOTO_LIKES_MIN, PHOTO_LIKES_MAX),
-    comments: generateArrayNumbers(getInteger(COMMENT_PER_PAGE_MIN, COMMENT_PER_PAGE_MAX)).map(() => createComments()),
+    comments: [ ...Array(getInteger(COMMENT_PER_PAGE_MIN, COMMENT_PER_PAGE_MAX)) ].map(() => createComment()),
   }
 }
 
-const photoDescriptions = generateArrayNumbers(PHOTO_DESCRIPTION_COUNT).map(() => createDescription());
+const photoDataItem = createDataIds().map(() => createDescription());
 
 // Fix Eslint Errors
 checkTextLength('Test', 5);
-photoDescriptions;
+photoDataItem;
