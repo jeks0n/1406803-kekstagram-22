@@ -102,7 +102,7 @@ const createDataIds = () => {
 }
 
 const checkTextLength = (text, maxLength) => text.length <= maxLength;
-const getDescriptionId = getRandomArrayElement(createDataIds(), {});
+const getPhotoDataId = getRandomArrayElement(createDataIds(), {});
 const getUrlIndex = getRandomArrayElement(createDataIds(), {});
 const getDescription = getRandomArrayElement(DESCRIPTIONS, {});
 const getCommentId = getRandomArrayElement([ ...Array(COMMENT_MAX_COUNT) ].map((item, index) => index + 1), {});
@@ -118,7 +118,7 @@ const createComment = () => {
 
 const createPhotoDataItem = () => {
   return {
-    id: getDescriptionId(),
+    id: getPhotoDataId(),
     url: `photos/${getUrlIndex()}.jpg`,
     description: getDescription(),
     likes: getInteger(PHOTO_LIKES_MIN, PHOTO_LIKES_MAX),
