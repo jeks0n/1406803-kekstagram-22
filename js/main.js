@@ -116,7 +116,7 @@ const createComment = () => {
   }
 }
 
-const createDescription = () => {
+const createPhotoDataItem = () => {
   return {
     id: getDescriptionId(),
     url: `photos/${getUrlIndex()}.jpg`,
@@ -126,8 +126,8 @@ const createDescription = () => {
   }
 }
 
-const photoDataItem = createDataIds().map(() => createDescription());
+const photoDataItems = createDataIds().map(() => createPhotoDataItem());
 
 // Fix Eslint Errors
 checkTextLength('Test', 5);
-photoDataItem;
+photoDataItems;
