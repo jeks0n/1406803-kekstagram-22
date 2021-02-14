@@ -1,3 +1,2 @@
-import { createPhotoData } from './create-photo-data.js';
+import './render-photo-data.js';
 
-createPhotoData();
