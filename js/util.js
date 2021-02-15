@@ -28,4 +28,8 @@ const getRandomArrayElement = (elements, { repeat = false } = {}) => {
 
 const checkTextLength = (text, maxLength) => text.length <= maxLength;
 
-export { getInteger, getRandomArrayElement, checkTextLength };
+const isEscEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
+
+export { getInteger, getRandomArrayElement, checkTextLength, isEscEvent };
