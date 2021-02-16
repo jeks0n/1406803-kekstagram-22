@@ -1,10 +1,9 @@
-const commentsFragment = document.createDocumentFragment();
-
 const clearComments = (commentsElement) => {
   commentsElement.innerHTML = '';
 }
 
 const renderComments = (array) => {
+  const commentsFragment = document.createDocumentFragment();
   array.forEach(({ avatar, message, name }) => {
     const socialCommentElement = document.createElement('li');
     socialCommentElement.classList.add('social__comment');

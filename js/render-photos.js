@@ -3,9 +3,8 @@ import { openPhotoModal } from './photo-modal.js';
 const picturesElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
 
-const picturesFragment = document.createDocumentFragment();
-
 const renderPhotos = (photoData) => {
+  const picturesFragment = document.createDocumentFragment();
   photoData.forEach(({ url, likes, comments, description }) => {
     const newPictureElement = pictureTemplate.cloneNode(true);
     newPictureElement.querySelector('.picture__img').src = url;
