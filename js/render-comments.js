@@ -1,6 +1,6 @@
 const clearComments = (commentsElement) => {
   commentsElement.innerHTML = '';
-}
+};
 
 const renderComments = (array) => {
   const commentsFragment = document.createDocumentFragment();
@@ -18,6 +18,6 @@ const renderComments = (array) => {
   });
 
   return commentsFragment;
-}
+};
 
 export { clearComments, renderComments };

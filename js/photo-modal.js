@@ -15,9 +15,9 @@ const commentsLoaderElement = photoModalElement.querySelector('.comments-loader'
 const onPhotoModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    photoModalElement.classList.add('hidden');
+    closePhotoModal();
   }
-}
+};
 
 const openPhotoModal = ({ url, likes, comments, description }) => {
   photoModalElement.classList.remove('hidden');
@@ -34,14 +34,14 @@ const openPhotoModal = ({ url, likes, comments, description }) => {
   commentsElement.appendChild(renderComments(comments));
 
   document.addEventListener('keydown', onPhotoModalEscKeydown);
-}
+};
 
 const closePhotoModal = () => {
   photoModalElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onPhotoModalEscKeydown);
-}
+};
 
 photoModalCloseElement.addEventListener('click', closePhotoModal);
 
