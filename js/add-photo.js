@@ -7,7 +7,7 @@ const SCALE_DEFAULT = 100;
 const FILTER_EFFECTS = [
   {
     name: 'Хром',
-    style: (value) => `grayscale(${value})`,
+    getStyle: (value) => `grayscale(${value})`,
     options: {
       range: {
         min: 0,
@@ -16,13 +16,12 @@ const FILTER_EFFECTS = [
       start: 1,
       step: 0.1,
     },
-    classEffect: '.effects__preview--chrome',
     effectId: 'effect-chrome',
     hasSlider: true,
   },
   {
     name: 'Сепия',
-    style: (value) => `sepia(${value})`,
+    getStyle: (value) => `sepia(${value})`,
     options: {
       range: {
         min: 0,
@@ -31,13 +30,12 @@ const FILTER_EFFECTS = [
       start: 1,
       step: 0.1,
     },
-    classEffect: '.effects__preview--sepia',
     effectId: 'effect-sepia',
     hasSlider: true,
   },
   {
     name: 'Марвин',
-    style: (value) => `invert(${value}%)`,
+    getStyle: (value) => `invert(${value}%)`,
     options: {
       range: {
         min: 0,
@@ -46,13 +44,12 @@ const FILTER_EFFECTS = [
       start: 100,
       step: 1,
     },
-    classEffect: '.effects__preview--marvin',
     effectId: 'effect-marvin',
     hasSlider: true,
   },
   {
     name: 'Фобос',
-    style: (value) => `blur(${value}px)`,
+    getStyle: (value) => `blur(${value}px)`,
     options: {
       range: {
         min: 0,
@@ -61,13 +58,12 @@ const FILTER_EFFECTS = [
       start: 3,
       step: 0.1,
     },
-    classEffect: '.effects__preview--phobos',
     effectId: 'effect-phobos',
     hasSlider: true,
   },
   {
     name: 'Зной',
-    style: (value) => `brightness(${value})`,
+    getStyle: (value) => `brightness(${value})`,
     options: {
       range: {
         min: 1,
@@ -76,14 +72,12 @@ const FILTER_EFFECTS = [
       start: 3,
       step: 0.1,
     },
-    classEffect: '.effects__preview--heat',
     effectId: 'effect-heat',
     hasSlider: true,
   },
   {
     name: 'Оригинал',
-    style: () => '',
-    classEffect: '.effects__preview--none',
+    getStyle: () => '',
     effectId: 'effect-none',
     hasSlider: false,
   },
@@ -98,6 +92,7 @@ const scaleMinusButtonElement = document.querySelector('.scale__control--smaller
 const scalePlusButtonElement = document.querySelector('.scale__control--bigger');
 const inputScaleElement = document.querySelector('.scale__control--value');
 const inputEffectValueElement = document.querySelector('.effect-level__value');
+const effectLevelElement = document.querySelector('.effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectListElement = document.querySelector('.effects__list');
 
@@ -113,7 +108,7 @@ inputFileElement.addEventListener('change', (evt) => {
   const reader = new FileReader();
   const file = evt.target.files[0];
 
-  reader.addEventListener('load', function () {
+  reader.addEventListener('load',  () => {
     newPhotoPreviewElement.src = reader.result;
   }, false);
 
@@ -130,6 +125,7 @@ inputFileElement.addEventListener('change', (evt) => {
 const closePhotoModal = () => {
   newPhotoModalElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
+  effectLevelElement.classList.add('hidden');
   resetEffect();
 
   document.removeEventListener('keydown', onPhotoModalEscKeydown);
@@ -154,36 +150,33 @@ scalePlusButtonElement.addEventListener('click', () => {
 });
 
 const resetEffect = () => {
-  if (sliderElement.noUiSlider) {
-    sliderElement.noUiSlider.destroy();
-  }
   newPhotoPreviewElement.style.filter = '';
   inputEffectValueElement.value = '';
 }
+effectLevelElement.classList.add('hidden');
 
-FILTER_EFFECTS.forEach(({ effectId, hasSlider, style, options }) => {
+FILTER_EFFECTS.forEach(({ effectId, hasSlider, getStyle, options }) => {
   const effectElement = effectListElement.querySelector(`input[id=${effectId}]`);
 
   if (effectElement) {
     if (!hasSlider) {
       return effectElement.addEventListener('click', () => {
         resetEffect();
+        effectLevelElement.classList.add('hidden');
       });
     }
     effectElement.addEventListener('change', () => {
+      if (!sliderElement.noUiSlider) {
+        // eslint-disable-next-line no-undef
+        noUiSlider.create(sliderElement, options);
+      }
+      effectLevelElement.classList.remove('hidden');
       resetEffect();
-      // eslint-disable-next-line no-undef
-      noUiSlider.create(sliderElement, options);
-      /*
-      Либо ошибка в коде, либо библиотека глючит и
-      при переключении не всегда правильно скалирование работает
-      поэтому реализовано через destroy. Если раскомментировать блок c update, убрать destroy
-      и много раз их поперещёлкивать можно словить этот баг.
       sliderElement.noUiSlider.off();
       sliderElement.noUiSlider.updateOptions(options);
-      */
+
       sliderElement.noUiSlider.on('update', (values, handle) => {
-        newPhotoPreviewElement.style.filter = style(values[handle]);
+        newPhotoPreviewElement.style.filter = getStyle(values[handle]);
         inputEffectValueElement.value = values[handle];
       });
     });
