@@ -17,6 +17,6 @@ const renderPhotos = (photoData) => {
   });
 
   picturesElement.appendChild(picturesFragment);
-}
+};
 
 export { renderPhotos };
