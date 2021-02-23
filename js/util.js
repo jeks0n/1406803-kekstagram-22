@@ -32,4 +32,9 @@ const isEscEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
 };
 
-export { getInteger, getRandomArrayElement, checkTextLength, isEscEvent };
+const hasDuplicateValues = (list) => {
+  const unique = list.map((item) => item.toLowerCase()).filter((item, index, array) => array.indexOf(item) === index);
+  return unique.length !== list.length;
+}
+
+export { getInteger, getRandomArrayElement, checkTextLength, isEscEvent, hasDuplicateValues };

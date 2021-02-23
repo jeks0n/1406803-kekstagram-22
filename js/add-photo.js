@@ -86,15 +86,15 @@ const FILTER_EFFECTS = [
 const bodyElement = document.querySelector('body');
 const inputFileElement = document.querySelector('#upload-file');
 const newPhotoModalElement = document.querySelector('.img-upload__overlay');
-const newPhotoModalCloseElement = document.querySelector('.img-upload__cancel');
-const newPhotoPreviewElement = document.querySelector('.img-upload__preview').querySelector('img');
-const scaleMinusButtonElement = document.querySelector('.scale__control--smaller');
-const scalePlusButtonElement = document.querySelector('.scale__control--bigger');
-const inputScaleElement = document.querySelector('.scale__control--value');
-const inputEffectValueElement = document.querySelector('.effect-level__value');
-const effectLevelElement = document.querySelector('.effect-level');
-const sliderElement = document.querySelector('.effect-level__slider');
-const effectListElement = document.querySelector('.effects__list');
+const newPhotoModalCloseElement = newPhotoModalElement.querySelector('.img-upload__cancel');
+const newPhotoPreviewElement = newPhotoModalElement.querySelector('.img-upload__preview').querySelector('img');
+const scaleMinusButtonElement = newPhotoModalElement.querySelector('.scale__control--smaller');
+const scalePlusButtonElement = newPhotoModalElement.querySelector('.scale__control--bigger');
+const inputScaleElement = newPhotoModalElement.querySelector('.scale__control--value');
+const inputEffectValueElement = newPhotoModalElement.querySelector('.effect-level__value');
+const effectLevelElement = newPhotoModalElement.querySelector('.effect-level');
+const sliderElement = newPhotoModalElement.querySelector('.effect-level__slider');
+const effectListElement = newPhotoModalElement.querySelector('.effects__list');
 
 const onPhotoModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -152,7 +152,8 @@ scalePlusButtonElement.addEventListener('click', () => {
 const resetEffect = () => {
   newPhotoPreviewElement.style.filter = '';
   inputEffectValueElement.value = '';
-}
+};
+
 effectLevelElement.classList.add('hidden');
 
 FILTER_EFFECTS.forEach(({ effectId, hasSlider, getStyle, options }) => {
@@ -170,8 +171,8 @@ FILTER_EFFECTS.forEach(({ effectId, hasSlider, getStyle, options }) => {
         // eslint-disable-next-line no-undef
         noUiSlider.create(sliderElement, options);
       }
-      effectLevelElement.classList.remove('hidden');
       resetEffect();
+      effectLevelElement.classList.remove('hidden');
       sliderElement.noUiSlider.off();
       sliderElement.noUiSlider.updateOptions(options);
 
