@@ -9,18 +9,32 @@ const inputHashTagsElement = photoFormElement.querySelector('.text__hashtags');
 const inputDescriptionElement = photoFormElement.querySelector('.text__description');
 
 inputHashTagsElement.addEventListener('input', () => {
-  const tags = inputHashTagsElement.value.split(' ').filter((item) => item.length);
+  const tags = inputHashTagsElement.value.replace(/\s+/g,' ').trim().split(' ');
 
-  if (/ {2}/.test(inputHashTagsElement.value)) {
-    inputHashTagsElement.setCustomValidity('Хеш-тег не может быть пустым (введено более одного пробела)');
-  } else if (/# /.test(inputHashTagsElement.value)) {
-    inputHashTagsElement.setCustomValidity('Хеш-тег не может состоять только из одного символа #');
-  } else if (!tags.every((tag) => /^#/.test(tag)) || /^ /.test(inputHashTagsElement.value)) {
-    inputHashTagsElement.setCustomValidity('Наименование хеш-тега должно начинаться с #');
-  } else if (!tags.every((tag) => tag.length >= 2 && tag.length <= TAG_MAX_LENGTH)) {
-    inputHashTagsElement.setCustomValidity(`Допустимая длина хеш-тега от 2 до ${TAG_MAX_LENGTH} символов`);
-  } else if (!tags.every((tag) => /^#[a-zA-Zа-яА-я0-9]+$/.test(tag))) {
-    inputHashTagsElement.setCustomValidity('Хеш-тег может состоять только из букв и чисел');
+  const tagSpellingValidation = {
+    isValid: true,
+    errorMessage: '',
+  };
+
+  tags.some((tag) => {
+    if (!/^#/.test(tag)) {
+      tagSpellingValidation.errorMessage = 'Наименование хеш-тега должно начинаться с #';
+    } else if (/# /.test(tag)) {
+      inputHashTagsElement.setCustomValidity('Хеш-тег не может состоять только из одного символа #');
+    } else if (!/^#[a-zA-Zа-яА-я0-9]+$/.test(tag)) {
+      tagSpellingValidation.errorMessage = 'Хеш-тег может состоять только из букв и чисел';
+    } else if (tag.length < 2 || tag.length > TAG_MAX_LENGTH) {
+      tagSpellingValidation.errorMessage = `Допустимая длина хеш-тега от 2 до ${TAG_MAX_LENGTH} символов`;
+    } else {
+      return false;
+    }
+
+    tagSpellingValidation.isValid = false;
+    return true;
+  });
+
+  if (!tagSpellingValidation.isValid) {
+    inputHashTagsElement.setCustomValidity(tagSpellingValidation.errorMessage);
   } else if (hasDuplicateValues(tags)) {
     inputHashTagsElement.setCustomValidity('Хеш-тег не может быть использован дважды');
   } else if (tags.length > TAG_MAX_COUNT) {
