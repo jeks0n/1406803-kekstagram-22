@@ -1,4 +1,6 @@
 import { checkTextLength, hasDuplicateValues, isEscEvent } from './util.js';
+import { showNote } from './show-note.js';
+import { sendData } from './api.js';
 
 const TAG_MAX_COUNT = 5;
 const TAG_MAX_LENGTH = 20;
@@ -67,3 +69,23 @@ inputDescriptionElement.addEventListener('keydown', (evt) => {
     evt.stopPropagation();
   }
 });
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  photoFormElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        showNote('success');
+        onSuccess();
+      },
+      () => {
+        showNote('error');
+        onFail();
+      },
+      new FormData(evt.target),
+    );
+  });
+};
+
+export { setUserFormSubmit };

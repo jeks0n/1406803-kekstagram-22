@@ -95,12 +95,12 @@ const inputEffectValueElement = newPhotoModalElement.querySelector('.effect-leve
 const effectLevelElement = newPhotoModalElement.querySelector('.effect-level');
 const sliderElement = newPhotoModalElement.querySelector('.effect-level__slider');
 const effectListElement = newPhotoModalElement.querySelector('.effects__list');
+const photoFormElement = document.querySelector('.img-upload__form');
 
 const onPhotoModalEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    // Click решает проблему открытия при повторной загрузке того же файла
-    newPhotoModalCloseElement.click();
+    closePhotoModal();
   }
 };
 
@@ -126,6 +126,8 @@ const closePhotoModal = () => {
   newPhotoModalElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   effectLevelElement.classList.add('hidden');
+  newPhotoPreviewElement.style.transform = `scale(${SCALE_DEFAULT / 100})`;
+  photoFormElement.reset();
   resetEffect();
 
   document.removeEventListener('keydown', onPhotoModalEscKeydown);
@@ -183,3 +185,5 @@ FILTER_EFFECTS.forEach(({ effectId, hasSlider, getStyle, options }) => {
     });
   }
 });
+
+export { closePhotoModal };

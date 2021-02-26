@@ -1,7 +1,12 @@
-import { createPhotoData } from './create-photo-data.js';
 import { renderPhotos } from './render-photos.js';
-import './add-photo.js';
-import './photo-form.js';
+import { setUserFormSubmit } from './photo-form.js';
+import { closePhotoModal } from './add-photo.js';
+import { showGlobalAlert } from './util.js';
+import { getData } from './api.js';
 
-const data = createPhotoData();
-renderPhotos(data);
+getData((photos) => {
+  renderPhotos(photos);
+}, showGlobalAlert);
+
+setUserFormSubmit(closePhotoModal, closePhotoModal);
+
