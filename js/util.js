@@ -37,8 +37,6 @@ const hasDuplicateValues = (list) => {
   return unique.length !== list.length;
 };
 
-const pictureTemplate = document.querySelector('#picture').content;
-
 const showGlobalAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
