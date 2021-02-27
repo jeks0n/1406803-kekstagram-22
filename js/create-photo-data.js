@@ -71,7 +71,7 @@ const COMMENT_AVATAR_INDEX_MAX = 6;
 
 const createDataIds = () => {
   return [ ...Array(PHOTO_DATA_COUNT) ].map((item, index) => index + 1);
-}
+};
 
 const getPhotoDataId = getRandomArrayElement(createDataIds());
 const getUrlIndex = getRandomArrayElement(createDataIds());
@@ -85,7 +85,7 @@ const createComment = () => {
     message: getRandomArrayElement(COMMENTS, { repeat: true })(),
     name: getRandomArrayElement(NAMES, { repeat: true })(),
   }
-}
+};
 
 const createPhotoDataItem = () => {
   return {
@@ -95,7 +95,7 @@ const createPhotoDataItem = () => {
     likes: getInteger(PHOTO_LIKES_MIN, PHOTO_LIKES_MAX),
     comments: [ ...Array(getInteger(COMMENT_PER_PAGE_MIN, COMMENT_PER_PAGE_MAX)) ].map(() => createComment()),
   }
-}
+};
 
 const createPhotoData = () => createDataIds().map(() => createPhotoDataItem());
 
