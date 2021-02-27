@@ -10,8 +10,8 @@ const getData = (onSuccess, onFail) => {
     .then((photos) => {
       onSuccess(photos);
     })
-    .catch((error) => {
-      onFail(`Ошибка загрузки данных (${error})`);
+    .catch(() => {
+      onFail();
     });
 };
 

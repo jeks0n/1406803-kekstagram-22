@@ -1,12 +1,15 @@
 import { renderPhotos } from './render-photos.js';
 import { setUserFormSubmit } from './photo-form.js';
 import { closePhotoModal } from './add-photo.js';
-import { showGlobalAlert } from './util.js';
 import { getData } from './api.js';
+import { showNote } from './show-note.js';
 
 getData((photos) => {
   renderPhotos(photos);
-}, showGlobalAlert);
+}, () => showNote('error', {
+  title: 'Ошибка загрузки данных',
+  buttonText: 'Понятно',
+}));
 
 setUserFormSubmit(closePhotoModal, closePhotoModal);
 

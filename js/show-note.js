@@ -9,7 +9,12 @@ const successButton = successElement.querySelector('.success__button');
 const errorElement = errorTemplate.cloneNode(true).querySelector('section');
 const errorButton = errorElement.querySelector('.error__button');
 
-const showMessage = (element, button) => {
+const showMessage = (element, button, { title, buttonText }) => {
+  if (title && buttonText) {
+    element.querySelector('h2').textContent = title;
+    element.querySelector('button').textContent = buttonText;
+  }
+
   const onOpenMessageEscKeydown = (evt) => {
     if (isEscEvent(evt)) {
       evt.preventDefault();
@@ -25,12 +30,12 @@ const showMessage = (element, button) => {
   button.addEventListener('click', () => element.remove());
 };
 
-const showNote = (message) => {
+const showNote = (message, options = {}) => {
   switch (message) {
     case 'success':
-      return showMessage(successElement, successButton);
+      return showMessage(successElement, successButton, options);
     case 'error':
-      return showMessage(errorElement, errorButton);
+      return showMessage(errorElement, errorButton, options);
   }
 };
 
