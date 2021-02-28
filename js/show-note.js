@@ -12,7 +12,7 @@ const errorButton = errorElement.querySelector('.error__button');
 const showMessage = (element, button, { title, buttonText }) => {
   if (title && buttonText) {
     element.querySelector('h2').textContent = title;
-    element.querySelector('button').textContent = buttonText;
+    button.textContent = buttonText;
   }
 
   const onOpenMessageEscKeydown = (evt) => {
