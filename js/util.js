@@ -37,4 +37,16 @@ const hasDuplicateValues = (list) => {
   return unique.length !== list.length;
 };
 
-export { getInteger, getRandomArrayElement, checkTextLength, isEscEvent, hasDuplicateValues };
+const debounce = (someFunction, ms) => {
+  let timeout;
+
+  return function () {
+    const callSomeFunction = () => someFunction.apply(this, arguments);
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(callSomeFunction, ms);
+  };
+};
+
+export { getInteger, getRandomArrayElement, checkTextLength, isEscEvent, hasDuplicateValues, debounce };
