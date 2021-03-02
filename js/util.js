@@ -41,11 +41,11 @@ const debounce = (cb, ms) => {
   let timeout;
 
   return (...args) => {
-    const callС = () => cb.apply(this, args);
+    const callCb = () => cb.apply(this, args);
 
     clearTimeout(timeout);
 
-    timeout = setTimeout(callSomeFunction, ms);
+    timeout = setTimeout(callCb, ms);
   };
 };
 

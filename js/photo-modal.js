@@ -22,9 +22,6 @@ const onPhotoModalEscKeydown = (evt) => {
 const openPhotoModal = ({ url, likes, comments, description }) => {
   photoModalElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-  // Прячем временно до другого задания
-  socialCommentCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
 
   bigPhotoElement.src = url;
   bigPhotoDescriptionElement.textContent = description;
