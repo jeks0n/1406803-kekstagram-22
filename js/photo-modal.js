@@ -19,19 +19,30 @@ const onPhotoModalEscKeydown = (evt) => {
   }
 };
 
+const stateVisibilityOfComments = {
+  comments: [],
+  visibleLength: 0,
+};
+
+commentsLoaderElement.addEventListener('click', () => {
+  if (stateVisibilityOfComments.comments.length > stateVisibilityOfComments.visibleLength) {
+    return commentsElement.appendChild(renderComments(stateVisibilityOfComments, commentsLoaderElement, socialCommentCountElement));
+  }
+});
+
 const openPhotoModal = ({ url, likes, comments, description }) => {
   photoModalElement.classList.remove('hidden');
+  commentsLoaderElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-  // Прячем временно до другого задания
-  socialCommentCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
 
   bigPhotoElement.src = url;
   bigPhotoDescriptionElement.textContent = description;
   likesCountElement.textContent = likes;
   commentsCountElement.textContent = comments.length;
   clearComments(commentsElement);
-  commentsElement.appendChild(renderComments(comments));
+  stateVisibilityOfComments.comments = comments;
+  stateVisibilityOfComments.visibleLength = 0;
+  commentsElement.appendChild(renderComments(stateVisibilityOfComments, commentsLoaderElement, socialCommentCountElement));
 
   document.addEventListener('keydown', onPhotoModalEscKeydown);
 };
