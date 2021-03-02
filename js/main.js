@@ -6,7 +6,7 @@ import { showNote } from './show-note.js';
 import { setFilter } from './filter.js';
 import { debounce } from './util.js';
 
-const RERENDER_DELAY = 2000;
+const RERENDER_DELAY = 500;
 
 getData((photos) => {
   renderPhotos(photos);

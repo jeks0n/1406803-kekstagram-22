@@ -37,15 +37,15 @@ const hasDuplicateValues = (list) => {
   return unique.length !== list.length;
 };
 
-const debounce = (someFunction, ms) => {
+const debounce = (cb, ms) => {
   let timeout;
 
-  return function () {
-    const callSomeFunction = () => someFunction.apply(this, arguments);
+  return (...args) => {
+    const callCb = () => cb.apply(this, args);
 
     clearTimeout(timeout);
 
-    timeout = setTimeout(callSomeFunction, ms);
+    timeout = setTimeout(callCb, ms);
   };
 };
 
