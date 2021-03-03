@@ -21,7 +21,8 @@ const renderComments = (stateVisibility, commentsLoaderElement, socialCommentCou
       commentsFragment.appendChild(socialCommentElement);
     });
 
-  const [ newCalculatedLength, commentsLength ] = [ stateVisibility.visibleLength + VISIBILITY_STEP, stateVisibility.comments.length ];
+  const newCalculatedLength = stateVisibility.visibleLength + VISIBILITY_STEP;
+  const commentsLength = stateVisibility.comments.length;
   stateVisibility.visibleLength = commentsLength <= newCalculatedLength ? commentsLength : newCalculatedLength;
   socialCommentCountElement.childNodes[0].nodeValue = `${stateVisibility.visibleLength} из `;
 

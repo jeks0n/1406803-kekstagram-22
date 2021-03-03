@@ -4,6 +4,7 @@ const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_STEP = 25;
 const SCALE_DEFAULT = 100;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const FILTER_EFFECTS = [
   {
     name: 'Хром',
@@ -107,12 +108,14 @@ const onPhotoModalEscKeydown = (evt) => {
 inputFileElement.addEventListener('change', (evt) => {
   const reader = new FileReader();
   const file = evt.target.files[0];
+  const fileName = file.name.toLowerCase();
+  const isTypeCorrect = FILE_TYPES.some((item) => fileName.endsWith(item));
 
   reader.addEventListener('load',  () => {
     newPhotoPreviewElement.src = reader.result;
   }, false);
 
-  if (file) {
+  if (isTypeCorrect) {
     reader.readAsDataURL(file);
     inputScaleElement.value = SCALE_DEFAULT + '%';
     newPhotoModalElement.classList.remove('hidden');
