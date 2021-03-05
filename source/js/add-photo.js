@@ -1,3 +1,5 @@
+import noUiSlider from 'nouislider';
+import 'nouislider/distribute/nouislider.css';
 import { isEscEvent } from './util.js';
 
 const SCALE_MIN = 25;
@@ -109,7 +111,7 @@ inputFileElement.addEventListener('change', (evt) => {
   const reader = new FileReader();
   const file = evt.target.files[0];
   const fileName = file.name.toLowerCase();
-  const isTypeCorrect = FILE_TYPES.some((item) => fileName.endsWith(item));
+  const isTypeCorrect = FILE_TYPES.some((item) => fileName.endsWith(`.${item}`));
 
   reader.addEventListener('load',  () => {
     newPhotoPreviewElement.src = reader.result;
@@ -173,7 +175,6 @@ FILTER_EFFECTS.forEach(({ effectId, hasSlider, getStyle, options }) => {
     }
     effectElement.addEventListener('change', () => {
       if (!sliderElement.noUiSlider) {
-        // eslint-disable-next-line no-undef
         noUiSlider.create(sliderElement, options);
       }
       resetEffect();
